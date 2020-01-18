@@ -18,4 +18,5 @@ Requires
   {% endif %}
   ```
 * In the backend go to *Comments - Settings - General* and check *Enable HTML comments?* checkbox
-
+* Add the *HTML Comments* component to your page (in addition to the *Comments* component)
+* Continue using your existing `{% component 'comments' %}` markup.
