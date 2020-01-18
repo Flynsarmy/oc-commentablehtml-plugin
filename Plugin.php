@@ -37,15 +37,14 @@ class Plugin extends PluginBase
 
         if ( $useHtml )
         {
-            // \Flynsarmy\Commentable\Models\Comment::extend(function($model) {
-            //     $model->bindEvent('model.getAttribute', function($attribute, $value) use ($model) {
-            //         // BackendUser needs 'firstname lastname' in Title column
-            //         if ( $attribute == 'renderedContent' )
-            //             return htmlspecialchars_decode($value);
+            \Flynsarmy\Commentable\Models\Comment::extend(function($model) {
+                $model->bindEvent('model.getAttribute', function($attribute, $value) use ($model) {
+                    if ( $attribute == 'renderedContent' )
+                        return htmlspecialchars_decode($model->content);
 
-            //         return null;
-            //     });
-            // });
+                    return null;
+                });
+            });
 
             // Convert backend to content field to a richeditor
             Event::listen('backend.form.extendFieldsBefore', function(\Backend\Widgets\Form $form) {
