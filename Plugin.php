@@ -18,7 +18,7 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'Commentable HTML Comments Extension',
+            'name'        => 'Commentable - HTML Comments Extension',
             'description' => 'Allows comments to be made with a WYSIWYG editor.',
             'author'      => 'Flynsarmy',
             'icon'        => 'icon-comments'
