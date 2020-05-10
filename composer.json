@@ -1,0 +1,15 @@
+{
+    "name": "flynsarmy/commentablehtml",
+    "description": "Allows comments to be made with a WYSIWYG editor.",
+    "type": "october-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "flynsarmy",
+            "email": "flynsarmy@gmail.com"
+        }
+    ],
+    "require": {
+        "nunomaduro/phpinsights": "dev-master"
+    }
+}

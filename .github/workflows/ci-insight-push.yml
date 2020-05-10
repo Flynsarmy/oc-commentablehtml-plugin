@@ -1,0 +1,35 @@
+name: CI - PHPInsight
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on: [push]
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  phpinsights:
+    runs-on: ubuntu-latest
+
+    name: PHP Insights checks
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Cache PHP dependencies
+      uses: actions/cache@v1
+      with:
+        path: vendor
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.4
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+        coverage: none
+
+    - name: Install PHP dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: PHPInsights
+      run: vendor/bin/phpinsights -n --ansi -v

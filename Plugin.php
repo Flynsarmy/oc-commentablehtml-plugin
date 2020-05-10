@@ -2,7 +2,13 @@
 
 namespace Flynsarmy\CommentableHtml;
 
+use Backend\Widgets\Form;
 use Event;
+use Flynsarmy\Commentable\Controllers\Notifications;
+use Flynsarmy\Commentable\Controllers\Settings as SettingsController;
+use Flynsarmy\Commentable\Controllers\Threads;
+use Flynsarmy\Commentable\Models\Comment;
+use Flynsarmy\Commentable\Models\Settings;
 use System\Classes\PluginBase;
 
 /**
@@ -36,12 +42,12 @@ class Plugin extends PluginBase
 
     public function boot()
     {
-        $useHtml = \Flynsarmy\Commentable\Models\Settings::instance()->get('enable_html_comments', false);
+        $useHtml = Settings::instance()->get('enable_html_comments', false);
 
         if ($useHtml) {
-            \Flynsarmy\Commentable\Models\Comment::extend(function ($model) {
+            Comment::extend(function ($model) {
                 $model->bindEvent('model.getAttribute', function ($attribute, $value) use ($model) {
-                    if ($attribute == 'renderedContent') {
+                    if ($attribute === 'renderedContent') {
                         return htmlspecialchars_decode($model->content);
                     }
 
@@ -50,14 +56,13 @@ class Plugin extends PluginBase
             });
 
             // Convert backend to content field to a richeditor
-            Event::listen('backend.form.extendFieldsBefore', function (\Backend\Widgets\Form $form) {
-                if (
-                    !$form->getController() instanceof \Flynsarmy\Commentable\Controllers\Threads &&
-                    !$form->getController() instanceof \Flynsarmy\Commentable\Controllers\Notifications
+            Event::listen('backend.form.extendFieldsBefore', function (Form $form) {
+                if (!$form->getController() instanceof Threads &&
+                    !$form->getController() instanceof Notifications
                 ) {
                     return;
                 }
-                if (!$form->model instanceof \Flynsarmy\Commentable\Models\Comment) {
+                if (!$form->model instanceof Comment) {
                     return;
                 }
                 if (!in_array($form->getContext(), ['update', 'edit'])) {
@@ -71,13 +76,11 @@ class Plugin extends PluginBase
         }
 
         // Add setting to toggle HTML forms on and off
-        Event::listen('backend.form.extendFieldsBefore', function (\Backend\Widgets\Form $form) {
-            if (
-                !$form->getController() instanceof \Flynsarmy\Commentable\Controllers\Settings
-            ) {
+        Event::listen('backend.form.extendFieldsBefore', function (Form $form) {
+            if (!$form->getController() instanceof SettingsController) {
                 return;
             }
-            if (!$form->model instanceof \Flynsarmy\Commentable\Models\Settings) {
+            if (!$form->model instanceof Settings) {
                 return;
             }
             if (!in_array($form->getContext(), ['update', 'edit'])) {
