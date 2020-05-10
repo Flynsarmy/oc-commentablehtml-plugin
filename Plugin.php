@@ -36,7 +36,7 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-            'Flynsarmy\CommentableHtml\Components\HtmlComments'   => 'htmlcomments',
+            'Flynsarmy\CommentableHtml\Components\HtmlComments' => 'htmlcomments',
         ];
     }
 
